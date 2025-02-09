@@ -1,8 +1,10 @@
-const n = 3;
+// The solver function and backtracking logic will be here
+const n = 9;
 
 /**
  * fills grid with num at index specified by (row, col)
  * assume (row, col) is a valid index
+ * for this to work, needs to copy grid so that the two arrays are not tied to each other
  * @param {Array<Array<Number>>} grid
  * @param {Number} num
  * @param {Number} row
@@ -10,8 +12,14 @@ const n = 3;
  * @returns {Array<Array<Number>>}
  */
 const updateGrid = (grid, num, row, col) => {
-  grid[row][col] = num;
-  return grid;
+  // create a copy of grid's values, no reference tied
+  const updatedGrid = grid.map((r) => {
+    return r.map((c) => {
+      return c;
+    });
+  });
+  updatedGrid[row][col] = num;
+  return updatedGrid;
 };
 
 /**
@@ -32,9 +40,11 @@ const isValid = (grid, row, col) => {
       return false;
     }
   }
-  // check within box (need to adjust logic for n=9, likely using / and %)
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
+
+  const rowArea = row - (row % 3);
+  const colArea = col - (col % 3);
+  for (let i = rowArea; i < rowArea + 3; i++) {
+    for (let j = colArea; j < colArea + 3; j++) {
       if (i != row && j != col && grid[i][j] == grid[row][col]) {
         return false;
       }
@@ -60,7 +70,6 @@ const displayGrid = (grid) => {
   return returnStr;
 };
 
-// The solver function and backtracking logic will be here
 /**
  * Implements a backtracking algorithm to solve a sudoku puzzle from the given grid
  * Assume grid is a valid sudoku board with a solution
@@ -70,6 +79,7 @@ const displayGrid = (grid) => {
  * @returns {Array<Array<Number>>} solved grid
  */
 const solver = (row, col, grid) => {
+  // console.log(displayGrid(grid));
   // check if at end of row, and if so move to the next row
   if (col >= n) {
     row += 1;
@@ -87,12 +97,14 @@ const solver = (row, col, grid) => {
   }
 
   // recurse
-  for (let i = 1; i <= 9; i++) {
+  for (let i = 1; i <= n; i++) {
+    // console.log("trying " + i);
     let solution;
     let updatedGrid = updateGrid(grid, i, row, col);
     // see if placing i would lead to a valid grid
     if (isValid(updatedGrid, row, col)) {
       // call solver with an updated grid
+      //   console.log(displayGrid(updatedGrid));
       solution = solver(row, col + 1, updatedGrid);
     } else {
       continue;
@@ -102,14 +114,32 @@ const solver = (row, col, grid) => {
       return solution;
     }
   }
+
+  // if number hasn't been placed, return and backtrack
+  // console.log("backtracking");
+  return;
 };
 
-console.log(
-  displayGrid(
-    solver(0, 0, [
-      [0, 5, 1],
-      [0, 0, 8],
-      [0, 4, 3],
-    ])
-  )
-);
+// generates n x n grid of 0's
+const generateEmptyGrid = (n) => {
+  const emptyGrid = [];
+  for (let i = 0; i < n; i++) {
+    const emptyRow = [];
+    for (let j = 0; j < n; j++) {
+      emptyRow.push(0);
+    }
+    emptyGrid.push(emptyRow);
+  }
+  return emptyGrid;
+};
+
+console.log(displayGrid(solver(0, 0, generateEmptyGrid(n))));
+// console.log(
+//   displayGrid(
+//     solver(0, 0, [
+//       [0, 0, 0],
+//       [0, 4, 5],
+//       [2, 3, 1],
+//     ])
+//   )
+// );
