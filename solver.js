@@ -38,7 +38,17 @@ const isValid = (grid, row, col) => {
  * Displays the grid in a nice-to-read manner
  * @param {*} grid
  */
-const displayGrid = (grid) => {};
+const displayGrid = (grid) => {
+  let returnStr = "";
+  for (let i = 0; i < n; i++) {
+    returnStr += "| ";
+    for (let j = 0; j < n; j++) {
+      returnStr += grid[i][j] + " ";
+    }
+    returnStr += "|\n";
+  }
+  return returnStr;
+};
 
 // The solver function and backtracking logic will be here
 const solver = (row, col, grid) => {
@@ -77,9 +87,11 @@ const solver = (row, col, grid) => {
 };
 
 console.log(
-  solver(0, 0, [
-    [0, 5, 1],
-    [0, 0, 8],
-    [0, 4, 3],
-  ])
+  displayGrid(
+    solver(0, 0, [
+      [0, 5, 1],
+      [0, 0, 8],
+      [0, 4, 3],
+    ])
+  )
 );
