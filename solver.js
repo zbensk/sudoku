@@ -41,6 +41,7 @@ const isValid = (grid, row, col) => {
     }
   }
 
+  // check box area
   const rowArea = row - (row % 3);
   const colArea = col - (col % 3);
   for (let i = rowArea; i < rowArea + 3; i++) {
@@ -71,6 +72,37 @@ const displayGrid = (grid) => {
 };
 
 /**
+ * Makes the next recursive call to solver
+ * Ensures that the call is not to a square already filled out
+ * @param {Number} row
+ * @param {Number} col
+ * @param {Array<Array<Number>>} grid
+ * @returns {Array<Array<Number>>}
+ */
+const recur = (row, col, grid) => {
+  while (true) {
+    // BASE CASE: puzzle is completed where row and col are max (bottom right corner)
+    if (row == n - 1 && col == n - 1) {
+      return grid;
+    }
+    // at end of the row, move to the next row
+    else if (col == n - 1) {
+      col = -1;
+      row += 1;
+      continue;
+    } else {
+      if (grid[row][col + 1] != 0) {
+        col += 1;
+        continue;
+      }
+    }
+    break;
+  }
+  // make recursive call
+  return solver(row, col + 1, grid);
+};
+
+/**
  * Implements a backtracking algorithm to solve a sudoku puzzle from the given grid
  * Assume grid is a valid sudoku board with a solution
  * @param {Number} row
@@ -91,21 +123,20 @@ const solver = (row, col, grid) => {
     return grid;
   }
 
-  // check if square already filled
+  // check if square already filled (TODO fix error with "hint" squares being overwritten)
   if (grid[row][col] != 0) {
     solver(row, col + 1, grid);
   }
 
   // recurse
   for (let i = 1; i <= n; i++) {
-    // console.log("trying " + i);
     let solution;
     let updatedGrid = updateGrid(grid, i, row, col);
     // see if placing i would lead to a valid grid
     if (isValid(updatedGrid, row, col)) {
       // call solver with an updated grid
       //   console.log(displayGrid(updatedGrid));
-      solution = solver(row, col + 1, updatedGrid);
+      solution = recur(row, col, updatedGrid);
     } else {
       continue;
     }
@@ -116,7 +147,6 @@ const solver = (row, col, grid) => {
   }
 
   // if number hasn't been placed, return and backtrack
-  // console.log("backtracking");
   return;
 };
 
@@ -133,13 +163,19 @@ const generateEmptyGrid = (n) => {
   return emptyGrid;
 };
 
-console.log(displayGrid(solver(0, 0, generateEmptyGrid(n))));
-// console.log(
-//   displayGrid(
-//     solver(0, 0, [
-//       [0, 0, 0],
-//       [0, 4, 5],
-//       [2, 3, 1],
-//     ])
-//   )
-// );
+// console.log(displayGrid(solver(0, 0, generateEmptyGrid(n))));
+console.log(
+  displayGrid(
+    solver(0, 0, [
+      [9, 2, 6, 3, 7, 8, 4, 5, 1],
+      [0, 4, 0, 5, 6, 1, 9, 0, 0],
+      [1, 0, 0, 0, 2, 9, 0, 3, 0],
+      [4, 6, 0, 0, 3, 2, 0, 7, 0],
+      [0, 0, 0, 0, 4, 0, 0, 0, 0],
+      [7, 0, 5, 0, 0, 6, 2, 0, 8],
+      [5, 1, 3, 0, 0, 0, 0, 0, 7],
+      [0, 0, 0, 0, 0, 0, 8, 0, 0],
+      [0, 0, 2, 6, 1, 0, 0, 9, 4],
+    ])
+  )
+);
