@@ -1,16 +1,25 @@
 const n = 3;
-// fills grid with num at index specified by (row, col)
-// assume (row, col) is a valid index
+
+/**
+ * fills grid with num at index specified by (row, col)
+ * assume (row, col) is a valid index
+ * @param {Array<Array<Number>>} grid
+ * @param {Number} num
+ * @param {Number} row
+ * @param {Number} col
+ * @returns {Array<Array<Number>>}
+ */
 const updateGrid = (grid, num, row, col) => {
   grid[row][col] = num;
   return grid;
 };
 
 /**
- * returns true if the grid follows the rules of sudoku
- * @param {*} grid
- * @param {*} row
- * @param {*} col
+ * returns true if the grid follows the rules of sudoku (no repeats along rows, cols, or in the same box)
+ * @param {Array<Array<Number>>} grid
+ * @param {Number} row
+ * @param {Number} col
+ * @returns {Boolean}
  */
 const isValid = (grid, row, col) => {
   for (let i = 0; i < n; i++) {
@@ -35,8 +44,9 @@ const isValid = (grid, row, col) => {
 };
 
 /**
- * Displays the grid in a nice-to-read manner
- * @param {*} grid
+ * Displays the grid in a format easier to read
+ * @param {Array<Array<Number>>} grid
+ * @returns {String}
  */
 const displayGrid = (grid) => {
   let returnStr = "";
@@ -51,6 +61,14 @@ const displayGrid = (grid) => {
 };
 
 // The solver function and backtracking logic will be here
+/**
+ * Implements a backtracking algorithm to solve a sudoku puzzle from the given grid
+ * Assume grid is a valid sudoku board with a solution
+ * @param {Number} row
+ * @param {Number} col
+ * @param {Array<Array<Number>>} grid
+ * @returns {Array<Array<Number>>} solved grid
+ */
 const solver = (row, col, grid) => {
   // check if at end of row, and if so move to the next row
   if (col >= n) {
