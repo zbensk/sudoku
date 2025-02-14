@@ -82,7 +82,7 @@ const isInputValid = (grid, n) => {
  * @param {Number} n size of the grid
  * @returns {String}
  */
-const displayGrid = (grid, n) => {
+export const displayGrid = (grid, n) => {
   // check if grid is null
   if (!grid) {
     return "No solution found";
@@ -139,7 +139,7 @@ const recur = (row, col, grid, n) => {
  * @param {Number} n size of grid
  * @returns {Array<Array<Number>>} solved grid
  */
-const solver = (row, col, grid, n) => {
+export const solver = (row, col, grid, n) => {
   let solution;
   // console.log(displayGrid(grid));
   // check if at end of row, and if so move to the next row
@@ -181,7 +181,7 @@ const solver = (row, col, grid, n) => {
 };
 
 // generates n x n grid of 0's
-const generateEmptyGrid = (n) => {
+export const generateEmptyGrid = (n) => {
   const emptyGrid = [];
   for (let i = 0; i < n; i++) {
     const emptyRow = [];
@@ -219,5 +219,5 @@ const testGrid = [
   [0, 0, 2, 6, 1, 0, 0, 9, 4],
 ];
 
-console.log(displayGrid(solvePuzzle(generateEmptyGrid(9)), 9));
+// console.log(displayGrid(solvePuzzle(generateEmptyGrid(9)), 9));
 // console.log(displayGrid(solvePuzzle(testGrid), 9));
