@@ -23,7 +23,7 @@ const updateGrid = (grid, num, row, col) => {
 };
 
 /**
- * returns true if the grid follows the rules of sudoku (no repeats along rows, cols, or in the same box)
+ * returns true if the number in the cell follows the rules of sudoku (no repeats along rows, cols, or in the same box)
  * @param {Array<Array<Number>>} grid
  * @param {Number} row
  * @param {Number} col
@@ -55,11 +55,36 @@ const isValid = (grid, row, col) => {
 };
 
 /**
+ * returns true if the entire grid follows the rules of sudoku
+ * this is an unfilled grid, so only checking the squares that are filled in
+ * @param {*} grid
+ * @returns {Boolean}
+ */
+const isInputValid = (grid) => {
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      // if cell is not unfilled (0), then skip, otherwise check if valid
+      if (grid[i][j] == 0) {
+        continue;
+      }
+      if (!isValid(grid, i, j)) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+/**
  * Displays the grid in a format easier to read
  * @param {Array<Array<Number>>} grid
  * @returns {String}
  */
 const displayGrid = (grid) => {
+  // check if grid is null
+  if (!grid) {
+    return "No solution found";
+  }
   let returnStr = "";
   for (let i = 0; i < n; i++) {
     returnStr += "| ";
@@ -104,13 +129,14 @@ const recur = (row, col, grid) => {
 
 /**
  * Implements a backtracking algorithm to solve a sudoku puzzle from the given grid
- * Assume grid is a valid sudoku board with a solution
+ * Assume grid is a valid sudoku board
  * @param {Number} row
  * @param {Number} col
  * @param {Array<Array<Number>>} grid
  * @returns {Array<Array<Number>>} solved grid
  */
 const solver = (row, col, grid) => {
+  let solution;
   // console.log(displayGrid(grid));
   // check if at end of row, and if so move to the next row
   if (col >= n) {
@@ -123,14 +149,14 @@ const solver = (row, col, grid) => {
     return grid;
   }
 
-  // check if square already filled (TODO fix error with "hint" squares being overwritten)
+  // check if square already filled
   if (grid[row][col] != 0) {
-    solver(row, col + 1, grid);
+    // console.log("row: " + row + " col: " + col);
+    return solver(row, col + 1, grid);
   }
 
   // recurse
   for (let i = 1; i <= n; i++) {
-    let solution;
     let updatedGrid = updateGrid(grid, i, row, col);
     // see if placing i would lead to a valid grid
     if (isValid(updatedGrid, row, col)) {
@@ -163,19 +189,30 @@ const generateEmptyGrid = (n) => {
   return emptyGrid;
 };
 
+/**
+ * Wrapper for the solver function that allows it to only take one input
+ * @param {Array<Array<Number>>} grid
+ * @returns {Array<Array<Number>>}
+ */
+const solvePuzzle = (grid) => {
+  // check to make sure grid has no errors before sending to solver
+  if (isInputValid(grid)) {
+    return solver(0, 0, grid);
+  }
+  return;
+};
+
+testGrid = [
+  [9, 2, 6, 3, 7, 8, 4, 5, 1],
+  [0, 4, 0, 5, 6, 1, 9, 0, 0],
+  [1, 0, 0, 0, 2, 9, 0, 3, 0],
+  [4, 6, 0, 0, 3, 2, 0, 7, 0],
+  [0, 0, 0, 0, 4, 0, 0, 0, 0],
+  [7, 0, 5, 0, 0, 6, 2, 0, 8],
+  [5, 1, 3, 0, 0, 0, 0, 0, 7],
+  [0, 0, 0, 0, 0, 0, 8, 0, 0],
+  [0, 0, 2, 6, 1, 0, 0, 9, 4],
+];
+
 // console.log(displayGrid(solver(0, 0, generateEmptyGrid(n))));
-console.log(
-  displayGrid(
-    solver(0, 0, [
-      [9, 2, 6, 3, 7, 8, 4, 5, 1],
-      [0, 4, 0, 5, 6, 1, 9, 0, 0],
-      [1, 0, 0, 0, 2, 9, 0, 3, 0],
-      [4, 6, 0, 0, 3, 2, 0, 7, 0],
-      [0, 0, 0, 0, 4, 0, 0, 0, 0],
-      [7, 0, 5, 0, 0, 6, 2, 0, 8],
-      [5, 1, 3, 0, 0, 0, 0, 0, 7],
-      [0, 0, 0, 0, 0, 0, 8, 0, 0],
-      [0, 0, 2, 6, 1, 0, 0, 9, 4],
-    ])
-  )
-);
+console.log(displayGrid(solvePuzzle(testGrid)));
