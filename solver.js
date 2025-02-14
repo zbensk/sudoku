@@ -1,5 +1,4 @@
 // The solver function and backtracking logic will be here
-const n = 9;
 
 /**
  * fills grid with num at index specified by (row, col)
@@ -27,9 +26,10 @@ const updateGrid = (grid, num, row, col) => {
  * @param {Array<Array<Number>>} grid
  * @param {Number} row
  * @param {Number} col
+ * @param {Number} n size of the grid
  * @returns {Boolean}
  */
-const isValid = (grid, row, col) => {
+const isValid = (grid, row, col, n) => {
   for (let i = 0; i < n; i++) {
     // horizontal
     if (i != col && grid[row][i] == grid[row][col]) {
@@ -58,9 +58,10 @@ const isValid = (grid, row, col) => {
  * returns true if the entire grid follows the rules of sudoku
  * this is an unfilled grid, so only checking the squares that are filled in
  * @param {*} grid
+ * @param {Number} n size of the grid
  * @returns {Boolean}
  */
-const isInputValid = (grid) => {
+const isInputValid = (grid, n) => {
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n; j++) {
       // if cell is not unfilled (0), then skip, otherwise check if valid
@@ -78,9 +79,10 @@ const isInputValid = (grid) => {
 /**
  * Displays the grid in a format easier to read
  * @param {Array<Array<Number>>} grid
+ * @param {Number} n size of the grid
  * @returns {String}
  */
-const displayGrid = (grid) => {
+const displayGrid = (grid, n) => {
   // check if grid is null
   if (!grid) {
     return "No solution found";
@@ -102,9 +104,10 @@ const displayGrid = (grid) => {
  * @param {Number} row
  * @param {Number} col
  * @param {Array<Array<Number>>} grid
+ * @param {Number} n size of the grid
  * @returns {Array<Array<Number>>}
  */
-const recur = (row, col, grid) => {
+const recur = (row, col, grid, n) => {
   while (true) {
     // BASE CASE: puzzle is completed where row and col are max (bottom right corner)
     if (row == n - 1 && col == n - 1) {
@@ -124,7 +127,7 @@ const recur = (row, col, grid) => {
     break;
   }
   // make recursive call
-  return solver(row, col + 1, grid);
+  return solver(row, col + 1, grid, n);
 };
 
 /**
@@ -133,9 +136,10 @@ const recur = (row, col, grid) => {
  * @param {Number} row
  * @param {Number} col
  * @param {Array<Array<Number>>} grid
+ * @param {Number} n size of grid
  * @returns {Array<Array<Number>>} solved grid
  */
-const solver = (row, col, grid) => {
+const solver = (row, col, grid, n) => {
   let solution;
   // console.log(displayGrid(grid));
   // check if at end of row, and if so move to the next row
@@ -152,17 +156,17 @@ const solver = (row, col, grid) => {
   // check if square already filled
   if (grid[row][col] != 0) {
     // console.log("row: " + row + " col: " + col);
-    return solver(row, col + 1, grid);
+    return solver(row, col + 1, grid, n);
   }
 
   // recurse
   for (let i = 1; i <= n; i++) {
     let updatedGrid = updateGrid(grid, i, row, col);
     // see if placing i would lead to a valid grid
-    if (isValid(updatedGrid, row, col)) {
+    if (isValid(updatedGrid, row, col, n)) {
       // call solver with an updated grid
       //   console.log(displayGrid(updatedGrid));
-      solution = recur(row, col, updatedGrid);
+      solution = recur(row, col, updatedGrid, n);
     } else {
       continue;
     }
@@ -191,18 +195,19 @@ const generateEmptyGrid = (n) => {
 
 /**
  * Wrapper for the solver function that allows it to only take one input
+ * Uses n=9 for standard sudoku puzzle
  * @param {Array<Array<Number>>} grid
  * @returns {Array<Array<Number>>}
  */
-const solvePuzzle = (grid) => {
+export const solvePuzzle = (grid) => {
   // check to make sure grid has no errors before sending to solver
-  if (isInputValid(grid)) {
-    return solver(0, 0, grid);
+  if (isInputValid(grid, 9)) {
+    return solver(0, 0, grid, 9);
   }
   return;
 };
 
-testGrid = [
+const testGrid = [
   [9, 2, 6, 3, 7, 8, 4, 5, 1],
   [0, 4, 0, 5, 6, 1, 9, 0, 0],
   [1, 0, 0, 0, 2, 9, 0, 3, 0],
@@ -214,5 +219,5 @@ testGrid = [
   [0, 0, 2, 6, 1, 0, 0, 9, 4],
 ];
 
-// console.log(displayGrid(solver(0, 0, generateEmptyGrid(n))));
-console.log(displayGrid(solvePuzzle(testGrid)));
+console.log(displayGrid(solvePuzzle(generateEmptyGrid(9)), 9));
+// console.log(displayGrid(solvePuzzle(testGrid), 9));
