@@ -1,0 +1,33 @@
+:root {
+  --sq-width: 4rem;
+  --sq-border_width: 0.25rem;
+}
+
+.grid {
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(9, var(--sq-width));
+  grid-template-rows: repeat(9, var(--sq-width));
+  width: fit-content;
+  height: fit-content;
+  border: calc(2 * var(--sq-border_width)) solid black;
+  background-color: black;
+}
+
+.square {
+  width: var(--sq-width);
+  height: var(--sq-width);
+  border: var(--sq-border_width) solid lightgray;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.square:nth-child(3n) {
+  border-right: calc(2 * var(--sq-border_width)) solid black;
+}
+
+span {
+  font-size: 2rem;
+}

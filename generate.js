@@ -103,6 +103,6 @@ export const generatePuzzle = (numFilled) => {
   return generate(81 - numFilled, 9);
 };
 
-const generatedGrid = generatePuzzle(30, 9);
-console.log(displayGrid(generatedGrid, 9));
-console.log(displayGrid(solvePuzzle(generatedGrid), 9));
+// const generatedGrid = generatePuzzle(50, 9);
+// console.log(displayGrid(generatedGrid, 9));
+// console.log(displayGrid(solvePuzzle(generatedGrid), 9));

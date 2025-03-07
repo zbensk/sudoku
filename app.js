@@ -2,15 +2,55 @@
 import { solvePuzzle } from "./solver.js";
 import { generatePuzzle } from "./generate.js";
 
-// const testGrid = [
-//   [9, 2, 6, 3, 7, 8, 4, 5, 1],
-//   [0, 4, 0, 5, 6, 1, 9, 0, 0],
-//   [1, 0, 0, 0, 2, 9, 0, 3, 0],
-//   [4, 6, 0, 0, 3, 2, 0, 7, 0],
-//   [0, 0, 0, 0, 4, 0, 0, 0, 0],
-//   [7, 0, 5, 0, 0, 6, 2, 0, 8],
-//   [5, 1, 3, 0, 0, 0, 0, 0, 7],
-//   [0, 0, 0, 0, 0, 0, 8, 0, 0],
-//   [0, 0, 2, 6, 1, 0, 0, 9, 4],
-// ];
-// console.log(solvePuzzle(testGrid));
+let grid = document.querySelectorAll(".square");
+let values = document.querySelectorAll("span");
+
+/**
+ * fills grid with accurate id selectors
+ * @param {NodeList} grid
+ */
+const initializeGrid = () => {
+  for (let i = 0; i < grid.length; i++) {
+    grid[i].setAttribute("id", i);
+    values[i].setAttribute("id", "value" + i);
+  }
+};
+
+/**
+ * Sets all values to empty
+ */
+const clearValues = () => {
+  values.forEach((val) => {
+    val.innerHTML = "";
+  });
+};
+
+/**
+ * fills grid with the corresponding numbers in grid_nums
+ * @param {Array<Array<Number>>} grid_nums
+ */
+const displayGrid = (grid_nums) => {
+  // collapse into 1D array
+  let gridData = [];
+  for (let r = 0; r < grid_nums.length; r++) {
+    for (let c = 0; c < grid_nums[r].length; c++) {
+      gridData.push(grid_nums[r][c]);
+    }
+  }
+  // add to grid (if not 0) and clear values first
+  clearValues();
+  for (let i = 0; i < gridData.length; i++) {
+    if (gridData[i] != 0) {
+      values[i].innerHTML = gridData[i];
+    }
+  }
+};
+
+const generateButton = document.getElementById("generate");
+generateButton.addEventListener("click", () => {
+  const grid_nums = generatePuzzle(40); // arbitrary value
+  displayGrid(grid_nums);
+});
+
+initializeGrid(grid);
+console.log(grid);
