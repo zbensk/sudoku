@@ -10,7 +10,7 @@
   grid-template-rows: repeat(9, var(--sq-width));
   width: fit-content;
   height: fit-content;
-  border: calc(2 * var(--sq-border_width)) solid black;
+  /* border: calc(2 * var(--sq-border_width)) solid black; */
   background-color: black;
 }
 
@@ -24,10 +24,14 @@
   align-items: center;
 }
 
-.square:nth-child(3n) {
-  border-right: calc(2 * var(--sq-border_width)) solid black;
+.square[highlighted="1"] {
+  border: var(--sq-border_width) solid gray;
 }
 
 span {
   font-size: 2rem;
+}
+
+span[set="0"] {
+  color: blue;
 }
