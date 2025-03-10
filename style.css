@@ -6,8 +6,11 @@
 .grid {
   margin: auto;
   display: grid;
-  grid-template-columns: repeat(9, var(--sq-width));
-  grid-template-rows: repeat(9, var(--sq-width));
+  grid-template-columns: repeat(
+    9,
+    calc(var(--sq-width) + var(--sq-border_width))
+  );
+  grid-template-rows: repeat(9, calc(var(--sq-width) + var(--sq-border_width)));
   width: fit-content;
   height: fit-content;
   /* border: calc(2 * var(--sq-border_width)) solid black; */
