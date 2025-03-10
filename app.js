@@ -28,13 +28,19 @@ const initializeGrid = () => {
 
 /**
  * enters key value into clicked square, assuming e.key is a valid number 1-9
+ * also checks for delete key
  * @param {Number} squareID
  * @param {Event} e
  */
 const enterNumber = (squareID, e) => {
-  // validate input and make sure square is not set (set == 1)
-  if (validNumber(e.key) && values[focusIndex].getAttribute("set") != 1) {
-    values[squareID].innerHTML = Number(e.key);
+  // make sure square is not set
+  if (values[focusIndex].getAttribute("set") != 1) {
+    // validate input
+    if (validNumber(e.key)) {
+      values[squareID].innerHTML = Number(e.key);
+    } else if (e.key === "Backspace") {
+      values[squareID].innerHTML = "";
+    }
   }
 };
 

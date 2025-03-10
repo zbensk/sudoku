@@ -22,10 +22,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 0;
 }
 
 .square[highlighted="1"] {
   border: var(--sq-border_width) solid gray;
+  z-index: 1;
 }
 
 span {
