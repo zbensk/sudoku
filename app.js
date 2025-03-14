@@ -16,6 +16,7 @@ const initializeGrid = () => {
     gridArray[i].setAttribute("highlighted", 0);
     values[i].setAttribute("id", "value" + i);
     values[i].setAttribute("set", 0);
+    values[i].setAttribute("value", 0);
     // add event listener to grid square
     gridArray[i].addEventListener("click", () => {
       // highlight square and unhighlight previous square
@@ -37,9 +38,18 @@ const enterNumber = (squareID, e) => {
   if (values[focusIndex].getAttribute("set") != 1) {
     // validate input
     if (validNumber(e.key)) {
+      // set blue initially
+      values[squareID].setAttribute("set", 0);
       values[squareID].innerHTML = Number(e.key);
+      values[squareID].setAttribute("value", Number(e.key));
+      if (!checkValidGrid()) {
+        // unsolvable
+        values[squareID].setAttribute("set", 2);
+      }
     } else if (e.key === "Backspace") {
       values[squareID].innerHTML = "";
+      values[squareID].setAttribute("value", 0);
+      values[squareID].setAttribute("set", 0);
     }
   }
 };
@@ -51,6 +61,33 @@ const enterNumber = (squareID, e) => {
 const validNumber = (s) => {
   const validNums = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
   return validNums.includes(s);
+};
+
+/**
+ * Turns values from grid into a 2d array that can be parsed by the solver
+ */
+const make2dArray = () => {
+  let array2d = [];
+  let currentRow = [];
+  for (let i = 1; i < values.length + 1; i++) {
+    currentRow.push(Number(values[i - 1].getAttribute("value")));
+    if (i % 9 == 0) {
+      // last element in row, append row to array, and clear row
+      array2d.push(currentRow);
+      currentRow = [];
+    }
+  }
+  return array2d;
+};
+
+/**
+ * Returns true if the grid is solvable based on the current numbers
+ */
+const checkValidGrid = () => {
+  const numArray = make2dArray();
+  // console.log(numArray);
+  // console.log(solvePuzzle(numArray));
+  return solvePuzzle(numArray);
 };
 
 /**
@@ -81,6 +118,7 @@ const displayGrid = (gridNums, isSet) => {
   for (let i = 0; i < gridData.length; i++) {
     if (gridData[i] != 0) {
       values[i].innerHTML = gridData[i];
+      values[i].setAttribute("value", gridData[i]);
       if (isSet) {
         values[i].setAttribute("set", 1);
       }

@@ -40,3 +40,7 @@ span {
 span[set="0"] {
   color: blue;
 }
+
+span[set="2"] {
+  color: red;
+}

@@ -62,13 +62,14 @@ const isValid = (grid, row, col, n) => {
  * @returns {Boolean}
  */
 const isInputValid = (grid, n) => {
+  // console.log(grid);
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n; j++) {
       // if cell is not unfilled (0), then skip, otherwise check if valid
       if (grid[i][j] == 0) {
         continue;
       }
-      if (!isValid(grid, i, j)) {
+      if (!isValid(grid, i, j, n)) {
         return false;
       }
     }
