@@ -33,6 +33,32 @@
   z-index: 1;
 }
 
+/* Marking out the grid boxes with black lines */
+/* Vertical lines */
+.square:nth-child(3n + 1) {
+  border-left: var(--sq-border_width) solid black;
+}
+
+.square:nth-child(9n) {
+  border-right: var(--sq-border_width) solid black;
+}
+/* Horizontal lines */
+.square:nth-child(n):nth-child(-n + 9) {
+  border-top: var(--sq-border_width) solid black;
+}
+
+.square:nth-child(n + 28):nth-child(-n + 36) {
+  border-top: var(--sq-border_width) solid black;
+}
+
+.square:nth-child(n + 55):nth-child(-n + 63) {
+  border-top: var(--sq-border_width) solid black;
+}
+
+.square:nth-child(n + 73) {
+  border-bottom: var(--sq-border_width) solid black;
+}
+
 span {
   font-size: 2rem;
 }
