@@ -42,7 +42,7 @@ const enterNumber = (squareID, e) => {
       values[squareID].setAttribute("set", 0);
       values[squareID].innerHTML = Number(e.key);
       values[squareID].setAttribute("value", Number(e.key));
-      if (!checkValidGrid()) {
+      if (!getSolvedPuzzle()) {
         // unsolvable
         values[squareID].setAttribute("set", 2);
       }
@@ -81,9 +81,9 @@ const make2dArray = () => {
 };
 
 /**
- * Returns true if the grid is solvable based on the current numbers
+ * Returns puzzle if the grid is solvable based on the current numbers
  */
-const checkValidGrid = () => {
+const getSolvedPuzzle = () => {
   const numArray = make2dArray();
   // console.log(numArray);
   // console.log(solvePuzzle(numArray));
@@ -97,15 +97,29 @@ const clearValues = () => {
   values.forEach((val) => {
     val.innerHTML = "";
     val.setAttribute("set", 0);
+    val.setAttribute("value", 0);
   });
+};
+
+/**
+ * Returns true if all value attribute in values are 0
+ */
+const isEmpty = () => {
+  for (let i = 0; i < values.length; i++) {
+    if (values[i].getAttribute("value") != 0) {
+      return false;
+    }
+  }
+  return true;
 };
 
 /**
  * fills grid with the corresponding numbers in gridNums
  * @param {Array<Array<Number>>} gridNums
- * @param {Boolean} isSet
+ * @param {Boolean} isSet true if values cannot be changed
+ * @param {Boolean} isSolving true if wanting to get the solving visual output
  */
-const displayGrid = (gridNums, isSet) => {
+const displayGrid = (gridNums, isSet, isSolving) => {
   // collapse into 1D array
   let gridData = [];
   for (let r = 0; r < gridNums.length; r++) {
@@ -113,14 +127,22 @@ const displayGrid = (gridNums, isSet) => {
       gridData.push(gridNums[r][c]);
     }
   }
-  // add to grid (if not 0) and clear values first
-  clearValues();
-  for (let i = 0; i < gridData.length; i++) {
-    if (gridData[i] != 0) {
+  // all set items stay black (set=1), while all the new elements that were just solved are blue (set=0)
+  if (isSolving) {
+    for (let i = 0; i < gridData.length; i++) {
       values[i].innerHTML = gridData[i];
       values[i].setAttribute("value", gridData[i]);
-      if (isSet) {
-        values[i].setAttribute("set", 1);
+    }
+  } else {
+    // add to grid (if not 0) and clear values first
+    clearValues();
+    for (let i = 0; i < gridData.length; i++) {
+      if (gridData[i] != 0) {
+        values[i].innerHTML = gridData[i];
+        values[i].setAttribute("value", gridData[i]);
+        if (isSet) {
+          values[i].setAttribute("set", 1);
+        }
       }
     }
   }
@@ -136,7 +158,22 @@ grid.addEventListener("keydown", (e) => {
 const generateButton = document.getElementById("generate");
 generateButton.addEventListener("click", () => {
   const gridNums = generatePuzzle(40); // arbitrary value
-  displayGrid(gridNums, true);
+  displayGrid(gridNums, true, false);
+});
+
+// Solve puzzle
+const solveButton = document.getElementById("solve");
+solveButton.addEventListener("click", () => {
+  if (isEmpty()) {
+    alert("Cannot get solution of empty grid!");
+  } else {
+    const solvedPuzzle = getSolvedPuzzle();
+    if (!solvedPuzzle) {
+      alert("There are mistakes in the puzzle!");
+    } else {
+      displayGrid(solvedPuzzle, true, true);
+    }
+  }
 });
 
 initializeGrid(gridArray);
