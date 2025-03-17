@@ -3,6 +3,28 @@
   --sq-border_width: 0.25rem;
 }
 
+* {
+  background: skyblue;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+.btn {
+  width: 10rem;
+  height: 3rem;
+  background: lightgreen;
+}
+
+.btn:hover {
+  scale: 1.05;
+}
+
 .grid {
   margin: auto;
   display: grid;
@@ -37,6 +59,7 @@
 /* Vertical lines */
 .square:nth-child(3n + 1) {
   border-left: var(--sq-border_width) solid black;
+  z-index: 2;
 }
 
 .square:nth-child(9n) {
@@ -61,6 +84,7 @@
 
 span {
   font-size: 2rem;
+  background: white;
 }
 
 span[set="0"] {
