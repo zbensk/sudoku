@@ -4,7 +4,7 @@
 }
 
 * {
-  background: skyblue;
+  background: #264653;
 }
 
 .button-wrapper {
@@ -18,7 +18,7 @@
 .btn {
   width: 10rem;
   height: 3rem;
-  background: lightgreen;
+  background: #f4a261;
 }
 
 .btn:hover {
@@ -43,7 +43,7 @@
   width: var(--sq-width);
   height: var(--sq-width);
   border: var(--sq-border_width) solid lightgray;
-  background-color: white;
+  background-color: #2a9d8f;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -57,40 +57,40 @@
 
 /* Marking out the grid boxes with black lines */
 /* Vertical lines */
-.square:nth-child(3n + 1) {
-  border-left: var(--sq-border_width) solid black;
-  z-index: 2;
+/* makes sure that the first column does not have border changed */
+.square:nth-child(3n + 1):not(:nth-child(9n + 1)) {
+  border-left: var(--sq-border_width) solid #264653;
 }
 
-.square:nth-child(9n) {
-  border-right: var(--sq-border_width) solid black;
-}
+/* .square:nth-child(9n) {
+  border-right: var(--sq-border_width) solid #264653;
+} */
 /* Horizontal lines */
-.square:nth-child(n):nth-child(-n + 9) {
-  border-top: var(--sq-border_width) solid black;
-}
+/* .square:nth-child(n):nth-child(-n + 9) {
+  border-top: var(--sq-border_width) solid #264653;
+} */
 
 .square:nth-child(n + 28):nth-child(-n + 36) {
-  border-top: var(--sq-border_width) solid black;
+  border-top: var(--sq-border_width) solid #264653;
 }
 
 .square:nth-child(n + 55):nth-child(-n + 63) {
-  border-top: var(--sq-border_width) solid black;
+  border-top: var(--sq-border_width) solid #264653;
 }
 
-.square:nth-child(n + 73) {
-  border-bottom: var(--sq-border_width) solid black;
-}
+/* .square:nth-child(n + 73) {
+  border-bottom: var(--sq-border_width) solid #264653;
+} */
 
 span {
   font-size: 2rem;
-  background: white;
+  background: #2a9d8f;
 }
 
 span[set="0"] {
-  color: blue;
+  color: #e9c46a;
 }
 
 span[set="2"] {
-  color: red;
+  color: #e76f51;
 }
