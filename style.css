@@ -55,6 +55,11 @@
   z-index: 1;
 }
 
+.square:hover {
+  border: var(--sq-border_width) solid gray;
+  z-index: 1;
+}
+
 /* Marking out the grid boxes with black lines */
 /* Vertical lines */
 /* makes sure that the first column does not have border changed */
