@@ -66,26 +66,27 @@
 .square:nth-child(3n + 1):not(:nth-child(9n + 1)) {
   border-left: var(--sq-border_width) solid #264653;
 }
-
-/* .square:nth-child(9n) {
+/* mirror of above to prevent overwriting of border */
+.square:nth-child(3n):not(:nth-child(9n)) {
   border-right: var(--sq-border_width) solid #264653;
-} */
-/* Horizontal lines */
-/* .square:nth-child(n):nth-child(-n + 9) {
-  border-top: var(--sq-border_width) solid #264653;
-} */
+}
 
+/* Horizontal lines */
+.square:nth-child(n + 19):nth-child(-n + 27) {
+  border-bottom: var(--sq-border_width) solid #264653;
+}
+/* mirror of above to prevent overwriting of border */
 .square:nth-child(n + 28):nth-child(-n + 36) {
   border-top: var(--sq-border_width) solid #264653;
 }
 
+.square:nth-child(n + 46):nth-child(-n + 54) {
+  border-bottom: var(--sq-border_width) solid #264653;
+}
+/* mirror of above to prevent overwriting of border */
 .square:nth-child(n + 55):nth-child(-n + 63) {
   border-top: var(--sq-border_width) solid #264653;
 }
-
-/* .square:nth-child(n + 73) {
-  border-bottom: var(--sq-border_width) solid #264653;
-} */
 
 span {
   font-size: 2rem;
