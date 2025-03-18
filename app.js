@@ -91,14 +91,19 @@ const getSolvedPuzzle = () => {
 };
 
 /**
- * Sets all values to empty
+ * Sets all values to empty, and clears any highlighted squares
  */
 const clearValues = () => {
-  values.forEach((val) => {
+  for (let i = 0; i < values.length; i++) {
+    // update values
+    const val = values[i];
     val.innerHTML = "";
     val.setAttribute("set", 0);
     val.setAttribute("value", 0);
-  });
+    // update squares
+    const square = gridArray[i];
+    square.setAttribute("highlighted", 0);
+  }
 };
 
 /**
